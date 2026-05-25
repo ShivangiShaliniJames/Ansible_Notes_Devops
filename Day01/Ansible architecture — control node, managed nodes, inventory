@@ -1,0 +1,100 @@
+Ansible architecture — control node, managed nodes, inventory
+
+Ansible is an open-source IT automation engine used for configuration management, application deployment, cloud provisioning, and 
+orchestration. Maintained by Red Hat and written in Python, it allows teams to manage infrastructure as code (IaC). Instead of executing 
+manual terminal commands on individual systems, administrators write human-readable blueprints that enforce a desired system state 
+automatically across thousands of machines.
+
+Ansible works using push based mechanism. Chef is pull based mechanism - It pulls configuration of all the servers and then updates 
+accordingly.
+
+Practical Demonstration (Video :15:00)
+
+Core Architecture & How It Works
+
+Ansible relies on a decentralized, minimalist framework. Its architecture consists of three fundamental components:
+
+Control Node: The machine where Ansible is installed and commands are run. It can be a local desktop, a server, or a containerised 
+Execution Environment.
+
+Managed Nodes: The target devices, such as Linux/Windows servers, cloud instances, or network switches.
+
+Inventory: A configuration file residing on the control node that lists and groups the managed hosts by IP address or domain name.
+
+The Agentless Advantage
+
+Unlike traditional management systems like Puppet or Chef, Ansible is agentless. You do not need to install daemon software on target 
+systems. Instead, the control node establishes standard OpenSSH or PowerShell remote connections, pushes standalone execution modules to
+the targets, runs them, and removes them when finished.
+
+Key Components of an Ansible Environment
+
+Playbooks: Automation manuals written in YAML syntax. They define an ordered sequence of tasks mapping specific hosts to specific 
+execution workflows.
+
+Modules: Ready-to-use Python or PowerShell scripts that perform specific actions, like apt for package management, copy for file transfers,
+or service for managing system daemons.
+
+Idempotence: A core operational philosophy. If a playbook runs multiple times, Ansible checks the system first. If the host is already in 
+the specified desired state, Ansible bypasses the task and makes zero modifications.
+
+Ansible Galaxy: A public, community-maintained gateway repository to share pre-packaged automation units called Roles and Collections.
+
+Common Use Cases
+
+Configuration Management: Ensuring all corporate servers maintain uniform user accounts, security definitions, and system configurations.
+
+Application Deployment: Pushing internally developed microservices and code repositories safely to production fleets.
+
+Provisioning: Interfacing with cloud providers to spin up virtual instances, storage, and networking layers.
+
+Network Automation: Managing multi-vendor firewalls, switches, and routers natively through dedicated network APIs.
+
+Ansible vs. Other DevOps Tools
+
+Tool                      Primary Purpose                                Architecture                    Configuration Language
+Ansible                  Configuration management and orchestration      Agentless (SSH/WinRM)           YAML (Declarative/Procedural)
+Terraform                Infrastructure provisioning                     Agentless (API-driven)          HCL (Strictly Declarative)
+Jenkins                  Continuous Integration / Continuous Deployment  Master/Worker Agents            Groovy / Pipeline DSL
+
+Installation of Ansible
+To install Ansible, you only need to install it on one central machine (the Control Node). The target servers (Managed Nodes) do not need
+any Ansible software installed; they only require Python and an SSH server.
+
+Here is how to install Ansible on the most common operating systems.
+
+1. Ubuntu / DebianUbuntu and Debian include Ansible in their official repositories, but using the official PPA (Personal Package Archive)
+ensures you get the latest version.
+
+# Update your system packages
+sudo apt update
+
+# Install software-properties-common for PPA management
+sudo apt install software-properties-common -y
+
+# Add the official Ansible PPA
+sudo add-apt-repository --yes --update ppa:ansible/ansible
+
+# Install Ansible
+sudo apt install ansible -y
+
+2. macOS
+
+The easiest way to install Ansible on macOS is using the Homebrew package manager.
+
+# Install via Homebrew
+brew install ansible
+
+Verify the Installation
+After installing, verify that Ansible is installed correctly and check its version by running:
+
+ansible --version
+
+Next Steps: A Quick Test
+
+To confirm Ansible can talk to machines, you can run a local test command. This commands tells Ansible to ping your own machine (localhost)
+using the local connection type:
+
+ansible localhost -m ping -c local
+
+If successful, you will see a green "ping": "pong" response in your terminal.
