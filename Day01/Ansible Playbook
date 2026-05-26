@@ -1,0 +1,57 @@
+Ansible Playbook (Video 1:06)
+
+An Ansible playbook is a configuration file written in YAML format that outlines a blueprint of automation tasks to be executed across 
+designated infrastructure networks. Instead of executing manual commands on thousands of individual target systems, developers use 
+playbooks as step-by-step instruction manuals to automatically deploy applications, enforce security policies, or update infrastructure
+uniformly.
+
+Core Concepts
+
+Playbook: The master configuration file containing one or more plays.
+
+Play: Maps a specific group of host computers from your inventory to an ordered list of tasks.
+Task: An individual action that invokes a specific automation tool (module).
+Module: The actual software binary or code executed on the target host (e.g., installing a package).
+Idempotency: The playbook can run multiple times safely, changing nothing if the target system is already in the desired state.
+
+Structure of a Playbook
+
+Here is a practical example of an ansible_setup.yml playbook designed to update systems and configure an Nginx web server:
+
+---
+- name: Configure Web Servers
+  hosts: webservers
+  become: true
+  vars:
+    web_port: 80
+
+  tasks:
+    - name: Ensure Nginx is at the latest version
+      ansible.builtin.apt:
+        name: nginx
+        state: latest
+        update_cache: true
+
+    - name: Ensure Nginx service is running and enabled
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
+
+Essential Keywords Explained
+
+name: A descriptive label used to document the play or individual task.
+hosts: Refers to the targeted machines or groups defined in your inventory file.
+become: Triggers privilege escalation, equivalent to executing commands using sudo.
+vars: Declares a reusable set of variables locally within the play.
+
+Execution and Management Commands
+
+To work with playbooks from your control node terminal, rely on the official Ansible Command Line Tools:
+
+Intent                          Terminal Command Syntax
+
+Run a playbook                  ansible-playbook -i inventory.ini playbook.yml
+Perform a syntax                checkansible-playbook playbook.yml --syntax-check
+Dry-run simulation              ansible-playbook playbook.yml --check
+View targeted hosts             ansible-playbook playbook.yml --list-hosts
